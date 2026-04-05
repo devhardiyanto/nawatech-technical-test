@@ -19,6 +19,53 @@ Layered flow:
 - Validation via FormRequest
 - API response envelope via `App\Support\ApiResponse`
 
+## ERD (Mermaid)
+
+```mermaid
+erDiagram
+    users ||--o{ orders : places
+    orders ||--|{ order_items : contains
+    products ||--o{ order_items : referenced_by
+
+    users {
+        bigint id PK
+        varchar name
+        varchar email
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    products {
+        bigint id PK
+        varchar name
+        text description
+        decimal price
+        int stock
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    orders {
+        bigint id PK
+        bigint user_id FK
+        enum status
+        decimal total_amount
+        enum payment_status
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    order_items {
+        bigint id PK
+        bigint order_id FK
+        bigint product_id FK
+        int quantity
+        decimal price
+        timestamp created_at
+        timestamp updated_at
+    }
+```
+
 ## Implemented API Endpoints
 
 - `GET /api/orders`
